@@ -1,0 +1,130 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/backgroundBottom"
+    tools:context="com.cat9tac.androidsafe.fragment.RemoteControlFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:id="@+id/ll_changesSIM_inform"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@color/backgroundMiddle"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ll_height_2"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_2"
+                android:text="换卡短信通知"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_remote_locate"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/backgroundMiddle"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ll_height_2"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="center_vertical"
+                android:text="远程定位"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_alarm_bell"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/backgroundMiddle"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ll_height_2"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="center_vertical"
+                android:text="发报警音"
+                android:textColor="@color/textcolorIsChoose"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_screen_message"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/backgroundMiddle"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ll_height_2"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="center_vertical"
+                android:text="发屏幕消息"
+                android:textColor="@color/textcolorIsChoose"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_lock_device"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/backgroundMiddle"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ll_height_2"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="center_vertical"
+                android:text="锁定手机"
+                android:textColor="@color/textcolorIsChoose"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
