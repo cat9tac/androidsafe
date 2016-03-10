@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="@color/backgroundBottom"
-    tools:context="com.cat9tac.androidsafe.fragment.AutoGuardFragment">
+    tools:context=".ui.fragment.AutoGuardFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

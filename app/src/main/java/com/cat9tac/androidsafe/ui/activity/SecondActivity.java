@@ -1,20 +1,22 @@
-package com.cat9tac.androidsafe.ui;
+package com.cat9tac.androidsafe.ui.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 
 import com.cat9tac.androidsafe.R;
-import com.cat9tac.androidsafe.fragment.AutoGuardFragment;
-import com.cat9tac.androidsafe.fragment.EncryptDataFragment;
-import com.cat9tac.androidsafe.fragment.RemoteControlFragment;
+import com.cat9tac.androidsafe.ui.fragment.AutoGuardFragment;
+import com.cat9tac.androidsafe.ui.fragment.EncryptDataFragment;
+import com.cat9tac.androidsafe.ui.fragment.RemoteControlFragment;
 
 public class SecondActivity extends AppCompatActivity {
     private int fragmentId;
     private Bundle bundle;
     private Fragment fragment;
     private FragmentManager fm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

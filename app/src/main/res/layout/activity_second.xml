@@ -7,7 +7,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:background="@color/backgroundBottom"
-    tools:context="com.cat9tac.androidsafe.ui.SecondActivity">
+    tools:context=".ui.activity.SecondActivity">
 
 
 </RelativeLayout>
