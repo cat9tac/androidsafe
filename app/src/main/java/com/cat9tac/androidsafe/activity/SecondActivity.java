@@ -37,7 +37,7 @@ public class SecondActivity extends AppCompatActivity {
 
             switch (fragmentId) {
                 case 0:
-                    fragment = new AutoGuardFragment();
+                    fragment = AutoGuardFragment.newInstance(null,null);
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                     break;
                 case 1:

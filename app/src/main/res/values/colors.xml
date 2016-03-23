@@ -7,4 +7,5 @@
     <color name="backgroundMiddle">#ffffff</color>
     <color name="textcolorIsChoose">#000000</color>
     <color name="textcolorNotChoose">#CCCCCC</color>
+    <color name="textcolorPrompt">#92253F</color>
 </resources>

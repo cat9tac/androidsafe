@@ -1,11 +1,16 @@
 package com.cat9tac.androidsafe.util;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +30,9 @@ public class DialogUtil {
     public void getDialog(Context context, String s) {
 
     }
+    Handler hander=new Handler(){
+
+    };
 
     //
     // create a dialog to get the email user input
@@ -52,25 +60,25 @@ public class DialogUtil {
                 buttonView.setChecked(false);
                 dialog.dismiss();
 
-
             }
         });
         builder.create().show();
     }
 
-    public static void getNumberDialog(final Context context) {
+    public static void getNumberDialog(final Context context, final TextView view) {
         View v = View.inflate(context, R.layout.dialog_choose_number, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final Dialog dialog=builder.create();
+        builder.setView(v);
         sharePreferenceEditor = new SharePreferenceEditor(context);
         Integer number;
         final TextView tv_number;
         ImageButton ib_plus, ib_sub;
-        tv_number = (TextView) v.findViewById(R.id.tv_failtime);
+        tv_number = (TextView) v.findViewById(R.id.tv_number);
         tv_number.setText(""+sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2));
         ib_plus = (ImageButton) v.findViewById(R.id.ib_plus);
         ib_sub = (ImageButton) v.findViewById(R.id.ib_sub);
         number = Integer.parseInt(tv_number.getText().toString());
-        int i = number;
-        String s = tv_number.getText().toString();
         ib_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,25 +98,15 @@ public class DialogUtil {
                     i -= 1;
                 tv_number.setText("" + i);
                 sharePreferenceEditor.getEditor().putInt("FAIL_TIME", i).commit();
+                ;
 
             }
         });
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(v);
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-
-            }
-        });
+                view.setText(""+sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2)+"次");
+        }});
         builder.create().show();
 
     }

@@ -19,11 +19,16 @@
             android:layout_height="wrap_content"
             android:text="解锁失败将会触发自动防盗"
             />
-        <LinearLayout
-            android:id="@+id/ll_startautoguard"
+        <RelativeLayout
+            android:id="@+id/rl_startautoguard"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:background="@color/backgroundMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ll_startautoguard"
+
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,17 +37,27 @@
 
             <TextView
                 android:layout_weight="1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/ll_height_2"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/text_size_2"
                 android:text="自动防盗"/>
             <Switch
+                android:layout_gravity="center_vertical"
                 android:id="@+id/switch_open_autoguard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+            <TextView
+                android:id="@+id/tv_prompt"
+                android:layout_below="@+id/ll_startautoguard"
+                android:text="@string/cancel_activate_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textcolorPrompt"/>
+        </RelativeLayout>
         <LinearLayout
+
             android:id="@+id/ll_unlock_fail_monitor"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -55,12 +70,19 @@
             android:layout_alignParentStart="true">
 
             <TextView
-                android:id="@+id/iv_failtime"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/ll_height_2"
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="解锁失败次数"/>
+            <TextView
+                android:id="@+id/tv_failtime"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/ll_height_2"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="center"
+                android:text=""/>
         </LinearLayout>
         <TextView
             android:padding="10dp"

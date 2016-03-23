@@ -6,21 +6,29 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.cat9tac.androidsafe.R;
 import com.cat9tac.androidsafe.activity.ActivateActvity;
 import com.cat9tac.androidsafe.util.ActivateDeviceAdmin;
 import com.cat9tac.androidsafe.util.SharePreferenceEditor;
 import com.cat9tac.androidsafe.util.DialogUtil;
+import com.cat9tac.androidsafe.util.UIEnableUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,22 +54,22 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String KEY_IS_ACTIVATE = "is_activate";
+    private static final String KEY_IS_ACTIVATE = "KEY_IS_ACTIVATE";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    //
+    // declaration  view
+    private List<View> vList = new ArrayList<View>();
+    private RelativeLayout rl_startll_autoguard;
     private LinearLayout ll_autoguard, ll_unlock_fail_monitor, ll_locate, ll_takephoto, ll_backup_contacts, ll_deletedata;
     private Switch switch_open_autoguard, switch_locate, switch_takephoto, switch_backup_contacts, switch_ttrack, switch_deletedata;
     private ActivateDeviceAdmin activateDeviceAdmin;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private boolean isActivate;
-    private String emailAddress;
     private SharePreferenceEditor sharePreferenceEditor;
+    private TextView tv_failtime;
+    private TextView tv_prompt;
 
     public AutoGuardFragment() {
         // Required empty public constructor
@@ -101,17 +109,32 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         activateDeviceAdmin = new ActivateDeviceAdmin(getActivity());
         View v = inflater.inflate(R.layout.fragment_auto_guard, container, false);
-
         init(v);
+        setUIDisable();
+
         return v;
     }
 
+    public void setUIDisable() {
+        if (!sharePreferenceEditor.getSharedPreferences().getBoolean(KEY_IS_ACTIVATE, false)) {
+            UIEnableUtil.disableView(vList);
+            rl_startll_autoguard.removeViewAt(4);
+
+        }
+
+    }
+
     public void init(View v) {
+        vList = UIEnableUtil.getAllChildViews(v);
+        rl_startll_autoguard = (RelativeLayout) v.findViewById(R.id.rl_startautoguard);
+        tv_prompt=new TextView(getActivity());
+        tv_prompt.setText(R.string.cancel_activate_prompt);
+        tv_prompt.setTextColor(Resources.getSystem().getColor(R.color.textcolorPrompt));
+        RelativeLayout.LayoutParams rlLayoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rlLayoutParams.addRule(RelativeLayout.BELOW,ll_autoguard.getId());
+        rl_startll_autoguard.addView(tv_prompt,rlLayoutParams);
 
-        //switch_locate,switch_takephoto,switch_backup_contacts,switch_ttrack,switch_deletedata;
-
-        sharedPreferences = getActivity().getSharedPreferences("state.activate", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        
         ll_autoguard = (LinearLayout) v.findViewById(R.id.ll_startautoguard);
         ll_unlock_fail_monitor = (LinearLayout) v.findViewById(R.id.ll_unlock_fail_monitor);
         ll_locate = (LinearLayout) v.findViewById(R.id.ll_locate);
@@ -135,6 +158,8 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         switch_takephoto.setOnCheckedChangeListener(this);
         switch_backup_contacts.setOnCheckedChangeListener(this);
         switch_deletedata.setOnCheckedChangeListener(this);
+        tv_failtime = (TextView) v.findViewById(R.id.tv_failtime);
+        tv_failtime.setText("" + sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2) + "次");
     }
 
     public void setWedgetUnenable() {
@@ -178,7 +203,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.ll_startautoguard:
-                if (sharePreferenceEditor.getSharedPreferences().getBoolean(KEY_IS_ACTIVATE, isActivate)) {
+                if (sharePreferenceEditor.getSharedPreferences().getBoolean(KEY_IS_ACTIVATE, false)) {
                     dialog();
                     break;
                 }
@@ -186,7 +211,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
                 startActivity(i);
                 break;
             case R.id.ll_unlock_fail_monitor:
-                DialogUtil.getNumberDialog(getActivity());
+                DialogUtil.getNumberDialog(getActivity(), tv_failtime);
                 break;
             case R.id.ll_locate:
                 onCheckedChanged(switch_locate, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_LOCATE, false));
@@ -264,7 +289,8 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
 
         }
     }
-// genetate a alertdialog
+
+    // genetate a alertdialog
     private void dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("关闭自动防盗后，屏幕锁依旧生效，但窃贼解锁失败后，安安将不再提供自动防盗保护。");
@@ -272,23 +298,25 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 activateDeviceAdmin.cancelActivate();
-                editor.putBoolean(KEY_IS_ACTIVATE, false).commit();
+                sharePreferenceEditor.getEditor().putBoolean(KEY_IS_ACTIVATE, false).commit();
+                //UIEnableUtil.enableView(vList);
+                setUIDisable();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-
             }
         });
         builder.create().show();
     }
-// according switchbutton id choose switchdialog
-    private  void switchDialog(int i, CompoundButton buttonView) {
+
+    // according switchbutton id choose switchdialog
+    private void switchDialog(int i, CompoundButton buttonView) {
         switch (i) {
             case LOCATE_ID:
-                DialogUtil.getNumberDialog(getActivity());
+                DialogUtil.getNumberDialog(getActivity(), tv_failtime);
                 break;
             case TAKE_PHOTO_ID:
                 DialogUtil.getEmailDialog(getActivity(), "输入邮箱，发送照片", IS_TAKE_PHOTO, buttonView);
@@ -321,5 +349,17 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("DDD","onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("DDD","onResume");
     }
 }

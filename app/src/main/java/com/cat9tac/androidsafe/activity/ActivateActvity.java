@@ -13,7 +13,7 @@ import com.cat9tac.androidsafe.R;
 import com.cat9tac.androidsafe.util.ActivateDeviceAdmin;
 
 public class ActivateActvity extends AppCompatActivity {
-    private static final String KEY_IS_ACTIVATE = "is_activate";
+    private static final String KEY_IS_ACTIVATE = "KEY_IS_ACTIVATE";
     private Button btnActivateAutoGurad;
     //must be static else you can't open the activate activity
 
