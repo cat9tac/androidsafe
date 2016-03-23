@@ -1,29 +1,24 @@
-package com.cat9tac.androidsafe.ui.fragment;
+package com.cat9tac.androidsafe.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.cat9tac.androidsafe.R;
-import com.cat9tac.androidsafe.ui.activity.DetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RemoteControlFragment.OnFragmentInteractionListener} interface
+ * {@link EncryptDataFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RemoteControlFragment#newInstance} factory method to
+ * Use the {@link EncryptDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RemoteControlFragment extends Fragment implements View.OnClickListener{
+public class EncryptDataFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,11 +30,9 @@ public class RemoteControlFragment extends Fragment implements View.OnClickListe
 
     private OnFragmentInteractionListener mListener;
 
-    public RemoteControlFragment() {
+    public EncryptDataFragment() {
         // Required empty public constructor
     }
-
-    private LinearLayout ll_remote_locate;
 
     /**
      * Use this factory method to create a new instance of
@@ -47,11 +40,11 @@ public class RemoteControlFragment extends Fragment implements View.OnClickListe
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RemoteControlFragment.
+     * @return A new instance of fragment EncryptDataFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RemoteControlFragment newInstance(String param1, String param2) {
-        RemoteControlFragment fragment = new RemoteControlFragment();
+    public static EncryptDataFragment newInstance(String param1, String param2) {
+        EncryptDataFragment fragment = new EncryptDataFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,25 +59,14 @@ public class RemoteControlFragment extends Fragment implements View.OnClickListe
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_remote_control, container, false);
-        init(v);
-        return v;
-
+        return inflater.inflate(R.layout.fragment_encrypt_data, container, false);
     }
-    private void init(View v) {
-        Log.i("jjj","detailActivity-init");
-        ll_remote_locate= (LinearLayout) v.findViewById(R.id.ll_remote_locate);
-        ll_remote_locate.setOnClickListener(this);
-    }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -108,23 +90,6 @@ public class RemoteControlFragment extends Fragment implements View.OnClickListe
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent i=new Intent();
-        Bundle bundle=new Bundle();
-        i.setClass(getActivity(), DetailActivity.class);
-
-        switch (v.getId()){
-            case R.id.ll_remote_locate:
-                Log.i("jjj","detailActivity");
-                Toast.makeText(getActivity(),"onClick",Toast.LENGTH_SHORT).show();
-                bundle.putInt("FRAGMENT_ID",12);
-                break;
-        }
-        i.putExtras(bundle);
-        startActivity(i);
     }
 
     /**

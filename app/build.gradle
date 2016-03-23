@@ -15,7 +15,7 @@ android {
         release {
             keyAlias 'mykey'
             keyPassword 'keyPassword'
-            storeFile file('D:\\Project\\AndroidStudioProjects\\KEY.jks')
+            storeFile file('D:\\Project\\AndroidStudioProjects\\cat9tac.jks')
             storePassword 'keyPassword'
         }
     }

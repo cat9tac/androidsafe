@@ -1,24 +1,29 @@
-package com.cat9tac.androidsafe.ui.fragment;
+package com.cat9tac.androidsafe.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cat9tac.androidsafe.R;
+import com.cat9tac.androidsafe.activity.BasicMapActivity;
+import com.cat9tac.androidsafe.activity.DetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EncryptDataFragment.OnFragmentInteractionListener} interface
+ * {@link RemoteControlFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EncryptDataFragment#newInstance} factory method to
+ * Use the {@link RemoteControlFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EncryptDataFragment extends Fragment {
+public class RemoteControlFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,9 +35,11 @@ public class EncryptDataFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public EncryptDataFragment() {
+    public RemoteControlFragment() {
         // Required empty public constructor
     }
+
+    private LinearLayout ll_remote_locate;
 
     /**
      * Use this factory method to create a new instance of
@@ -40,11 +47,11 @@ public class EncryptDataFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EncryptDataFragment.
+     * @return A new instance of fragment RemoteControlFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EncryptDataFragment newInstance(String param1, String param2) {
-        EncryptDataFragment fragment = new EncryptDataFragment();
+    public static RemoteControlFragment newInstance(String param1, String param2) {
+        RemoteControlFragment fragment = new RemoteControlFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,14 +66,24 @@ public class EncryptDataFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_encrypt_data, container, false);
+        View v=inflater.inflate(R.layout.fragment_remote_control, container, false);
+        init(v);
+        return v;
+
     }
+    private void init(View v) {
+        ll_remote_locate= (LinearLayout) v.findViewById(R.id.ll_remote_locate);
+        ll_remote_locate.setOnClickListener(this);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -90,6 +107,36 @@ public class EncryptDataFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent i=new Intent();
+        i=new Intent();
+        Bundle bundle=new Bundle();
+        switch (v.getId()){
+            case R.id.ll_changesSIM_inform:
+                i.setClass(getActivity(), DetailActivity.class);
+                bundle.putInt("FRAGMENT_ID",21);
+                break;
+            case R.id.ll_remote_locate:
+                i.setClass(getActivity(), BasicMapActivity.class);
+                break;
+            case R.id.ll_alarm_bell:
+                i.setClass(getActivity(),DetailActivity.class);
+                bundle.putInt("FRAGMENT_ID",23);
+                break;
+            case R.id.ll_screen_message:
+                i.setClass(getActivity(),DetailActivity.class);
+                bundle.putInt("FRAGMENT_ID",24);
+                break;
+            case R.id.ll_lock_device:
+                i.setClass(getActivity(),DetailActivity.class);
+                bundle.putInt("FRAGMENT_ID",25);
+                break;
+        }
+        i.putExtras(bundle);
+        startActivity(i);
     }
 
     /**

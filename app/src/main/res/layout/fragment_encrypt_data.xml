@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundBottom"
     android:padding="10dp"
-    tools:context=".ui.fragment.EncryptDataFragment">
+    tools:context=".fragment.EncryptDataFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

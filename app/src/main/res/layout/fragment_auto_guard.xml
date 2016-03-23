@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="@color/backgroundBottom"
-    tools:context=".ui.fragment.AutoGuardFragment">
+    tools:context=".fragment.AutoGuardFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -20,7 +20,7 @@
             android:text="解锁失败将会触发自动防盗"
             />
         <LinearLayout
-            android:id="@+id/ll_autoguard"
+            android:id="@+id/ll_startautoguard"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:background="@color/backgroundMiddle"
@@ -38,11 +38,12 @@
                 android:textSize="@dimen/text_size_2"
                 android:text="自动防盗"/>
             <Switch
+                android:id="@+id/switch_open_autoguard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_remote"
+            android:id="@+id/ll_unlock_fail_monitor"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginTop="1dp"
@@ -54,6 +55,7 @@
             android:layout_alignParentStart="true">
 
             <TextView
+                android:id="@+id/iv_failtime"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/ll_height_2"
                 android:textSize="@dimen/text_size_2"
@@ -68,7 +70,7 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_encrypt"
+            android:id="@+id/ll_locate"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginTop="1dp"
@@ -89,11 +91,12 @@
                 android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
+                android:id="@+id/switch_locate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_locate"
+            android:id="@+id/ll_takephoto"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginTop="1dp"
@@ -114,12 +117,13 @@
                 android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
+                android:id="@+id/switch_takephoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         v
         <LinearLayout
-            android:id="@+id/ll_backup"
+            android:id="@+id/ll_backup_contacts"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginTop="1dp"
@@ -140,6 +144,7 @@
                 android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
+                android:id="@+id/switch_backup_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -161,10 +166,11 @@
                 android:layout_height="@dimen/ll_height_2"
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
-                android:text="20小时轨迹追踪"
+                android:text="24小时轨迹追踪"
                 android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
+                android:id="@+id/switch_ttrack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -190,6 +196,7 @@
                 android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
+                android:id="@+id/switch_deletedata"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
