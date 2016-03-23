@@ -11,7 +11,21 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            keyAlias 'mykey'
+            keyPassword 'keyPassword'
+            storeFile file('D:\\Project\\AndroidStudioProjects\\KEY.jks')
+            storePassword 'keyPassword'
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -22,6 +36,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile files('AMap_Location_V2.4.0_20160308.jar')
+    compile files('AMap_2DMap_V2.8.1_20160202.jar')
+    compile files('butterknife-7.0.1.jar')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
