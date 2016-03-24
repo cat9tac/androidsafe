@@ -54,7 +54,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String KEY_IS_ACTIVATE = "KEY_IS_ACTIVATE";
+    private static final String IS_ACTIVATE = "IS_ACTIVATE";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -110,56 +110,70 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         activateDeviceAdmin = new ActivateDeviceAdmin(getActivity());
         View v = inflater.inflate(R.layout.fragment_auto_guard, container, false);
         init(v);
-        setUIDisable();
+        //setUIDisable();
 
         return v;
     }
 
     public void setUIDisable() {
-        if (!sharePreferenceEditor.getSharedPreferences().getBoolean(KEY_IS_ACTIVATE, false)) {
+        if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false)) {
             UIEnableUtil.disableView(vList);
-            rl_startll_autoguard.removeViewAt(4);
+            rl_startll_autoguard.removeViewAt(rl_startll_autoguard.getChildCount()-1);
 
         }
 
     }
 
     public void init(View v) {
+        //view list
         vList = UIEnableUtil.getAllChildViews(v);
-        rl_startll_autoguard = (RelativeLayout) v.findViewById(R.id.rl_startautoguard);
-        tv_prompt=new TextView(getActivity());
-        tv_prompt.setText(R.string.cancel_activate_prompt);
-        tv_prompt.setTextColor(Resources.getSystem().getColor(R.color.textcolorPrompt));
-        RelativeLayout.LayoutParams rlLayoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        rlLayoutParams.addRule(RelativeLayout.BELOW,ll_autoguard.getId());
-        rl_startll_autoguard.addView(tv_prompt,rlLayoutParams);
-
-        
+        //define linearlayout
         ll_autoguard = (LinearLayout) v.findViewById(R.id.ll_startautoguard);
         ll_unlock_fail_monitor = (LinearLayout) v.findViewById(R.id.ll_unlock_fail_monitor);
         ll_locate = (LinearLayout) v.findViewById(R.id.ll_locate);
         ll_takephoto = (LinearLayout) v.findViewById(R.id.ll_takephoto);
         ll_backup_contacts = (LinearLayout) v.findViewById(R.id.ll_backup_contacts);
         ll_deletedata = (LinearLayout) v.findViewById(R.id.ll_deletedata);
+        //define switch
         switch_open_autoguard = (Switch) v.findViewById(R.id.switch_open_autoguard);
         switch_locate = (Switch) v.findViewById(R.id.switch_locate);
         switch_takephoto = (Switch) v.findViewById(R.id.switch_takephoto);
         switch_backup_contacts = (Switch) v.findViewById(R.id.switch_backup_contacts);
         switch_ttrack = (Switch) v.findViewById(R.id.switch_ttrack);
         switch_deletedata = (Switch) v.findViewById(R.id.switch_deletedata);
+        //all linearLayout ser onclicklistener
         ll_autoguard.setOnClickListener(this);
         ll_unlock_fail_monitor.setOnClickListener(this);
         ll_locate.setOnClickListener(this);
         ll_takephoto.setOnClickListener(this);
         ll_backup_contacts.setOnClickListener(this);
         ll_deletedata.setOnClickListener(this);
+        //all switch add checked change listener
         switch_open_autoguard.setOnCheckedChangeListener(this);
         switch_locate.setOnCheckedChangeListener(this);
         switch_takephoto.setOnCheckedChangeListener(this);
         switch_backup_contacts.setOnCheckedChangeListener(this);
         switch_deletedata.setOnCheckedChangeListener(this);
+        // textview failed time
         tv_failtime = (TextView) v.findViewById(R.id.tv_failtime);
         tv_failtime.setText("" + sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2) + "次");
+        //add an prompt textview
+        rl_startll_autoguard = (RelativeLayout) v.findViewById(R.id.rl_startautoguard);
+        addPromptText();
+        Log.i("DDD",""+rl_startll_autoguard.getChildCount());
+
+    }
+    public void addPromptText(){
+        tv_prompt=new TextView(getActivity());
+        tv_prompt.setText(R.string.cancel_activate_prompt);
+        tv_prompt.setTextColor(getResources().getColor(R.color.textcolorPrompt));
+        RelativeLayout.LayoutParams rlLayoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rlLayoutParams.addRule(RelativeLayout.BELOW,ll_autoguard.getId());
+        rl_startll_autoguard.addView(tv_prompt,rlLayoutParams);
+
+    }
+    public void deletePromptText(){
+        rl_startll_autoguard.removeView(tv_prompt);
     }
 
     public void setWedgetUnenable() {
@@ -203,7 +217,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.ll_startautoguard:
-                if (sharePreferenceEditor.getSharedPreferences().getBoolean(KEY_IS_ACTIVATE, false)) {
+                if (sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false)) {
                     dialog();
                     break;
                 }
@@ -298,7 +312,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 activateDeviceAdmin.cancelActivate();
-                sharePreferenceEditor.getEditor().putBoolean(KEY_IS_ACTIVATE, false).commit();
+                sharePreferenceEditor.getEditor().putBoolean(IS_ACTIVATE, false).commit();
                 //UIEnableUtil.enableView(vList);
                 setUIDisable();
             }
@@ -354,12 +368,12 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onStart() {
         super.onStart();
-        Log.i("DDD","onStart");
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("DDD","onResume");
+
     }
 }

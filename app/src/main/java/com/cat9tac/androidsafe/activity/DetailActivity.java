@@ -4,11 +4,29 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.cat9tac.androidsafe.R;
 import com.cat9tac.androidsafe.fragment.ActivateAutoGuardFragment;
 
 public class DetailActivity extends AppCompatActivity {
+    private  static final String FRAGMENT_ID = "FRAGMENT_ID";
+    private static final  int ACTIVATE_ACTIVITY_ID = 11;
+    private static final  int REMOTECONTROL_ACTIVITY_ID = 12;
+    private static final int LOCATE_ACTIVATE_ID = 13;
+    private static final int TAKEPHOTO_FRAGMENT_ID = 14;
+    private static final int BACKUP_CONTACTS_FRAGMENT_ID = 15;
+    private static final int TTRACK_FRAGMENT_ID = 16;
+    private static final int DELETEDATA_FRAGMENT_ID = 17;
+    private static final  int CHANGESSIM_INFORM_FRAGMENT_ID = 21;
+    private static final  int REMOTELOCATE_FRAGMENT_ID = 22;
+    private static final int ALARMBELL_ID = 23;
+    private static final int SCREENMESSAGE_FRAGMENT_ID = 24;
+    private static final int LOCKDEVICE_FRAGMENT_ID = 25;
+    private static final int ENCRYPTDATA_FRAGMENT_ID = 31;
+
+
+
     private int fragmentId;
     private Bundle bundle;
     private Fragment fragment;
@@ -18,6 +36,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         bundle = getIntent().getExtras();
         fragmentId = bundle.getInt("FRAGMENT_ID");
         fm = getFragmentManager();

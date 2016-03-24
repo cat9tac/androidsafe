@@ -73,7 +73,6 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="发报警音"
-                android:textColor="@color/textcolorIsChoose"
                 />
 
         </LinearLayout>
@@ -96,7 +95,7 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="发屏幕消息"
-                android:textColor="@color/textcolorIsChoose"
+
                 />
 
         </LinearLayout>
@@ -120,7 +119,7 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="锁定手机"
-                android:textColor="@color/textcolorIsChoose"
+
                 />
 
         </LinearLayout>

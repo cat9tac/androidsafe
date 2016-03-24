@@ -3,6 +3,7 @@ package com.cat9tac.androidsafe.activity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.amap.api.location.AMapLocation;
@@ -29,6 +30,10 @@ public class BasicMapActivity extends AppCompatActivity implements LocationSourc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_map);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("远程定位" );
+        toolbar.setTitleTextColor(getResources().getColor(R.color.backgroundBottom));
+        setSupportActionBar(toolbar);
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
 

@@ -48,13 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-            <TextView
-                android:id="@+id/tv_prompt"
-                android:layout_below="@+id/ll_startautoguard"
-                android:text="@string/cancel_activate_prompt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textcolorPrompt"/>
         </RelativeLayout>
         <LinearLayout
 
@@ -110,7 +103,7 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="定位"
-                android:textColor="@color/textcolorNotChoose"
+
                 />
             <Switch
                 android:id="@+id/switch_locate"
@@ -136,7 +129,6 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="拍下窃贼的脸"
-                android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
                 android:id="@+id/switch_takephoto"
@@ -163,7 +155,6 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="备份通讯录"
-                android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
                 android:id="@+id/switch_backup_contacts"
@@ -189,7 +180,6 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="24小时轨迹追踪"
-                android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
                 android:id="@+id/switch_ttrack"
@@ -215,7 +205,6 @@
                 android:textSize="@dimen/text_size_2"
                 android:gravity="center_vertical"
                 android:text="删除数据"
-                android:textColor="@color/textcolorNotChoose"
                 />
             <Switch
                 android:id="@+id/switch_deletedata"
