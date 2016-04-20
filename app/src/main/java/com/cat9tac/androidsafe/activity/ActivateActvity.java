@@ -3,6 +3,7 @@ package com.cat9tac.androidsafe.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,8 @@ public class ActivateActvity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private boolean isActivate;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,7 @@ public class ActivateActvity extends AppCompatActivity {
     private void init() {
         sharedPreferences = getSharedPreferences("state.activate", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        activateDeviceAdmin = new ActivateDeviceAdmin(ActivateActvity.this);
+        activateDeviceAdmin = ActivateDeviceAdmin.getInstance(getApplicationContext());
         btnActivateAutoGurad = (Button) findViewById(R.id.btn_activate_auto_guard);
         btnActivateAutoGurad.setOnClickListener(new View.OnClickListener() {
             @Override

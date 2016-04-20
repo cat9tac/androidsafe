@@ -7,17 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cat9tac.androidsafe.StateRecord;
+import com.cat9tac.androidsafe.application.AAApp;
 import com.cat9tac.androidsafe.receiver.MyDeviceAdminReceiver;
 
 /**
  * Created by v_ypfu on 2016/3/18.
  */
 public class ActivateDeviceAdmin {
-    public  DevicePolicyManager mDPM;
-    public ComponentName componentName;
-    public DeviceAdminInfo deviceAdminInfo;
-    public Boolean isActivate = false;
-    public Context context;
+    public  static DevicePolicyManager mDPM;
+    public  static  ComponentName componentName;
+    public static  DeviceAdminInfo deviceAdminInfo;
+    public static  Boolean isActivate = false;
+    public static  Context context;
+    public static ActivateDeviceAdmin activateDeviceAdmin;
 
 
     public ActivateDeviceAdmin(Context context) {
@@ -26,6 +28,17 @@ public class ActivateDeviceAdmin {
         this.mDPM=mDPM;
         this.componentName=componentName;
         this.context=context;
+    }
+    public static ActivateDeviceAdmin getInstance(Context context){
+        if(activateDeviceAdmin==null){
+            activateDeviceAdmin= new ActivateDeviceAdmin(context);
+        }
+        return activateDeviceAdmin;
+
+    }
+
+    public DevicePolicyManager getmDPM() {
+        return mDPM;
     }
 
     public  Intent getActivateIntent() {

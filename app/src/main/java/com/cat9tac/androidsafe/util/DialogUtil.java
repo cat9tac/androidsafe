@@ -26,6 +26,7 @@ import com.cat9tac.androidsafe.R;
 public class DialogUtil {
     private static String emailAddress;
     private static SharePreferenceEditor sharePreferenceEditor;
+    private static  final String FAILED_COUNT="FAILED_COUNT";
 
     public void getDialog(Context context, String s) {
 
@@ -75,17 +76,17 @@ public class DialogUtil {
         final TextView tv_number;
         ImageButton ib_plus, ib_sub;
         tv_number = (TextView) v.findViewById(R.id.tv_number);
-        tv_number.setText(""+sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2));
+        tv_number.setText(""+sharePreferenceEditor.getSharedPreferences().getInt(FAILED_COUNT, 2));
         ib_plus = (ImageButton) v.findViewById(R.id.ib_plus);
         ib_sub = (ImageButton) v.findViewById(R.id.ib_sub);
         number = Integer.parseInt(tv_number.getText().toString());
         ib_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2);
+                int i = sharePreferenceEditor.getSharedPreferences().getInt(FAILED_COUNT, 2);
                 i += 1;
                 tv_number.setText("" + i);
-                sharePreferenceEditor.getEditor().putInt("FAIL_TIME", i).commit();
+                sharePreferenceEditor.getEditor().putInt(FAILED_COUNT, i).commit();
 
             }
         });
@@ -93,11 +94,11 @@ public class DialogUtil {
 
             @Override
             public void onClick(View v) {
-                int i = sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2);
+                int i = sharePreferenceEditor.getSharedPreferences().getInt(FAILED_COUNT, 2);
                 if (i > 0)
                     i -= 1;
                 tv_number.setText("" + i);
-                sharePreferenceEditor.getEditor().putInt("FAIL_TIME", i).commit();
+                sharePreferenceEditor.getEditor().putInt(FAILED_COUNT, i).commit();
                 ;
 
             }
@@ -105,7 +106,7 @@ public class DialogUtil {
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                view.setText(""+sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2)+"次");
+                view.setText(""+sharePreferenceEditor.getSharedPreferences().getInt(FAILED_COUNT, 2)+"次");
         }});
         builder.create().show();
 

@@ -10,8 +10,11 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -50,11 +53,14 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     private static final String IS_DELETE_DATA = "IS_DELETE_DATA";
     private static final String IS_BACKUP_CONTACTS = "IS_BACKUP_CONTACTS";
     private static final String IS_TTRACK = "IS_TTRACK";
+    private static  final String FAILED_COUNT="FAILED_COUNT";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String IS_ACTIVATE = "IS_ACTIVATE";
+
+    private Handler handler;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -115,10 +121,22 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         return v;
     }
 
+
+
     public void setUIDisable() {
         if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false)) {
             UIEnableUtil.disableView(vList);
             rl_startll_autoguard.removeViewAt(rl_startll_autoguard.getChildCount()-1);
+            //rl_startll_autoguard.removeView(tv_prompt);
+
+        }
+
+    }
+    public void setUIEnable() {
+        if (sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false)) {
+            switch_open_autoguard.setChecked(true);
+            UIEnableUtil.enableView(vList);
+           addPromptText();
 
         }
 
@@ -156,11 +174,12 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         switch_deletedata.setOnCheckedChangeListener(this);
         // textview failed time
         tv_failtime = (TextView) v.findViewById(R.id.tv_failtime);
-        tv_failtime.setText("" + sharePreferenceEditor.getSharedPreferences().getInt("FAIL_TIME", 2) + "次");
+        tv_failtime.setText("" + sharePreferenceEditor.getSharedPreferences().getInt(FAILED_COUNT, 2) + "次");
         //add an prompt textview
         rl_startll_autoguard = (RelativeLayout) v.findViewById(R.id.rl_startautoguard);
-        addPromptText();
-        Log.i("DDD",""+rl_startll_autoguard.getChildCount());
+        if(sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false))
+        {    switch_open_autoguard.setChecked(true);
+            addPromptText();}
 
     }
     public void addPromptText(){
@@ -170,6 +189,150 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         RelativeLayout.LayoutParams rlLayoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rlLayoutParams.addRule(RelativeLayout.BELOW,ll_autoguard.getId());
         rl_startll_autoguard.addView(tv_prompt,rlLayoutParams);
+
+    }
+    //LinearLayout onClick
+    @Override
+    public void onClick(View v) {
+        Intent i = new Intent();
+        i = new Intent();
+        Bundle bundle = new Bundle();
+        switch (v.getId()) {
+            case R.id.ll_startautoguard:
+                onCheckedChanged(switch_open_autoguard,!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false));
+                break;
+            case R.id.ll_unlock_fail_monitor:
+                DialogUtil.getNumberDialog(getActivity(), tv_failtime);
+                break;
+            case R.id.ll_locate:
+                onCheckedChanged(switch_locate, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_LOCATE, false));
+                break;
+            case R.id.ll_takephoto:
+                onCheckedChanged(switch_takephoto, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TAKE_PHOTO, false));
+                break;
+            case R.id.ll_backup_contacts:
+                onCheckedChanged(switch_backup_contacts, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_BACKUP_CONTACTS, false));
+                break;
+            case R.id.ll_ttrack:
+                onCheckedChanged(switch_ttrack, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TTRACK, false));
+                break;
+            case R.id.ll_deletedata:
+                onCheckedChanged(switch_deletedata, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_DELETE_DATA, false));
+                break;
+        }
+
+    }
+
+    // switch  checked Changed
+
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            switch (buttonView.getId()) {
+                case R.id.switch_open_autoguard:
+                    if(!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false))
+                    {
+                        Intent activateIntent = new Intent();
+                        Bundle activateBundle = new Bundle();
+                        activateIntent.setClass(getActivity(), ActivateActvity.class);
+                        startActivity(activateIntent);
+                    }
+                    break;
+                case R.id.switch_locate:
+                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_LOCATE, false))
+                        switchDialog(LOCATE_ID, buttonView);
+
+                    break;
+                case R.id.switch_takephoto:
+                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TAKE_PHOTO, false))
+                        switchDialog(TAKE_PHOTO_ID, buttonView);
+                    break;
+                case R.id.switch_backup_contacts:
+                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_BACKUP_CONTACTS, false))
+                        switchDialog(BACKUP_CONTACTS_ID, buttonView);
+                    break;
+                case R.id.switch_ttrack:
+                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TTRACK, false))
+                        switchDialog(TTRACK_ID, buttonView);
+                    break;
+                case R.id.switch_deletedata:
+                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_DELETE_DATA, false))
+                        switchDialog(DELETE_DATA_ID, buttonView);
+                    break;
+            }
+        } else {
+            switch (buttonView.getId()) {
+                case R.id.switch_open_autoguard:
+                    if(sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false))
+                        dialog();
+                    break;
+                case R.id.switch_locate:
+                    sharePreferenceEditor.getEditor().putBoolean(IS_LOCATE, false).commit();
+                    buttonView.setChecked(false);
+                    break;
+                case R.id.switch_takephoto:
+                    sharePreferenceEditor.getEditor().putBoolean(IS_TAKE_PHOTO, false).commit();
+                    buttonView.setChecked(false);
+                    break;
+                case R.id.switch_backup_contacts:
+                    sharePreferenceEditor.getEditor().putBoolean(IS_TAKE_PHOTO, false).commit();
+                    buttonView.setChecked(false);
+                    break;
+                case R.id.switch_ttrack:
+                    sharePreferenceEditor.getEditor().putBoolean(IS_TTRACK, false).commit();
+                    buttonView.setChecked(false);
+                    break;
+                case R.id.switch_deletedata:
+                    sharePreferenceEditor.getEditor().putBoolean(IS_DELETE_DATA, false).commit();
+                    buttonView.setChecked(false);
+                    break;
+            }
+
+        }
+    }
+
+    // genetate a alertdialog
+    private void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("关闭自动防盗后，屏幕锁依旧生效，但窃贼解锁失败后，安安将不再提供自动防盗保护。");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activateDeviceAdmin.cancelActivate();
+                sharePreferenceEditor.getEditor().putBoolean(IS_ACTIVATE, false).commit();
+                //UIEnableUtil.enableView(vList);
+                switch_open_autoguard.setChecked(false);
+                setUIDisable();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    // according switchbutton id choose switchdialog
+    private void switchDialog(int i, CompoundButton buttonView) {
+        switch (i) {
+            case LOCATE_ID:
+                DialogUtil.getEmailDialog(getActivity(), "输入邮箱，发送定位", IS_LOCATE, buttonView);
+                break;
+            case TAKE_PHOTO_ID:
+                DialogUtil.getEmailDialog(getActivity(), "输入邮箱，发送照片", IS_TAKE_PHOTO, buttonView);
+                break;
+            case BACKUP_CONTACTS_ID:
+                //TODO
+                break;
+            case TTRACK_ID:
+                //TODO
+                break;
+            case DELETE_DATA_ID:
+                //TODO
+                break;
+
+        }
 
     }
     public void deletePromptText(){
@@ -209,145 +372,7 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
         mListener = null;
     }
 
-    //LinearLayout onClick
-    @Override
-    public void onClick(View v) {
-        Intent i = new Intent();
-        i = new Intent();
-        Bundle bundle = new Bundle();
-        switch (v.getId()) {
-            case R.id.ll_startautoguard:
-                if (sharePreferenceEditor.getSharedPreferences().getBoolean(IS_ACTIVATE, false)) {
-                    dialog();
-                    break;
-                }
-                i.setClass(getActivity(), ActivateActvity.class);
-                startActivity(i);
-                break;
-            case R.id.ll_unlock_fail_monitor:
-                DialogUtil.getNumberDialog(getActivity(), tv_failtime);
-                break;
-            case R.id.ll_locate:
-                onCheckedChanged(switch_locate, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_LOCATE, false));
-                break;
-            case R.id.ll_takephoto:
-                onCheckedChanged(switch_takephoto, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TAKE_PHOTO, false));
-                break;
-            case R.id.ll_backup_contacts:
-                onCheckedChanged(switch_backup_contacts, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_BACKUP_CONTACTS, false));
-                break;
-            case R.id.ll_ttrack:
-                onCheckedChanged(switch_ttrack, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TTRACK, false));
-                break;
-            case R.id.ll_deletedata:
-                onCheckedChanged(switch_deletedata, !sharePreferenceEditor.getSharedPreferences().getBoolean(IS_DELETE_DATA, false));
-                break;
-        }
 
-    }
-
-    // switch  checked Changed
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            switch (buttonView.getId()) {
-                case R.id.switch_open_autoguard:
-                    switchDialog(1, buttonView);
-                    break;
-                case R.id.switch_locate:
-                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_LOCATE, false))
-                        switchDialog(LOCATE_ID, buttonView);
-                    break;
-                case R.id.switch_takephoto:
-                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TAKE_PHOTO, false))
-                        switchDialog(TAKE_PHOTO_ID, buttonView);
-                    break;
-                case R.id.switch_backup_contacts:
-                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_BACKUP_CONTACTS, false))
-                        switchDialog(BACKUP_CONTACTS_ID, buttonView);
-                    break;
-                case R.id.switch_ttrack:
-                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_TTRACK, false))
-                        switchDialog(TTRACK_ID, buttonView);
-                    break;
-                case R.id.switch_deletedata:
-                    if (!sharePreferenceEditor.getSharedPreferences().getBoolean(IS_DELETE_DATA, false))
-                        switchDialog(DELETE_DATA_ID, buttonView);
-                    break;
-            }
-        } else {
-            switch (buttonView.getId()) {
-                case R.id.switch_open_autoguard:
-                    buttonView.setChecked(false);
-                    break;
-                case R.id.switch_locate:
-                    sharePreferenceEditor.getEditor().putBoolean(IS_LOCATE, false).commit();
-                    buttonView.setChecked(false);
-                    break;
-                case R.id.switch_takephoto:
-                    sharePreferenceEditor.getEditor().putBoolean(IS_TAKE_PHOTO, false).commit();
-                    buttonView.setChecked(false);
-                    break;
-                case R.id.switch_backup_contacts:
-                    sharePreferenceEditor.getEditor().putBoolean(IS_TAKE_PHOTO, false).commit();
-                    buttonView.setChecked(false);
-                    break;
-                case R.id.switch_ttrack:
-                    sharePreferenceEditor.getEditor().putBoolean(IS_TTRACK, false).commit();
-                    buttonView.setChecked(false);
-                    break;
-                case R.id.switch_deletedata:
-                    sharePreferenceEditor.getEditor().putBoolean(IS_DELETE_DATA, false).commit();
-                    buttonView.setChecked(false);
-                    break;
-            }
-
-        }
-    }
-
-    // genetate a alertdialog
-    private void dialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("关闭自动防盗后，屏幕锁依旧生效，但窃贼解锁失败后，安安将不再提供自动防盗保护。");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                activateDeviceAdmin.cancelActivate();
-                sharePreferenceEditor.getEditor().putBoolean(IS_ACTIVATE, false).commit();
-                //UIEnableUtil.enableView(vList);
-                setUIDisable();
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    // according switchbutton id choose switchdialog
-    private void switchDialog(int i, CompoundButton buttonView) {
-        switch (i) {
-            case LOCATE_ID:
-                DialogUtil.getNumberDialog(getActivity(), tv_failtime);
-                break;
-            case TAKE_PHOTO_ID:
-                DialogUtil.getEmailDialog(getActivity(), "输入邮箱，发送照片", IS_TAKE_PHOTO, buttonView);
-                break;
-            case BACKUP_CONTACTS_ID:
-                //TODO
-                break;
-            case TTRACK_ID:
-                //TODO
-                break;
-            case DELETE_DATA_ID:
-                //TODO
-                break;
-
-        }
-
-    }
 
 
     /**
@@ -374,6 +399,6 @@ public class AutoGuardFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-
+        setUIEnable();
     }
 }
